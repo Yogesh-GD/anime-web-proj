@@ -47,7 +47,7 @@ export default function AnimeSearch() {
                         load && animeData.map((value, index) => {
                             return (
 
-                                <NavLink to={`/AnimeDetail/${value.mal_id}`} key={index}><div> <img src={value.images.jpg.small_image_url} /> </div><h5>{value.title}</h5>   </NavLink>
+                                <NavLink to={`/AnimeDetail/${value.mal_id}`} onClick={()=>setSearchInput('')} key={index}><div> <img src={value.images.jpg.small_image_url} /> </div><h5>{value.title}</h5>   </NavLink>
 
 
                             )
