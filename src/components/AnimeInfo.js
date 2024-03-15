@@ -1,15 +1,17 @@
 import axios from 'axios';
 import React, { useState, useEffect, useContext } from 'react'
-import { NavLink } from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import { themecontext } from '../App';
 import Loadbar from './loadingbar';
 
 
 export default function Detail({ animekey }) {
-
+   
     const [animeDetail, setAnimeDetail] = useState('');
     const [load, setLoad] = useState(false)
     const theme = useContext(themecontext)
+    const [error, setError] = useState('')
+
     useEffect(() => {
         const fetchdata = async () => {
             try {
@@ -21,12 +23,20 @@ export default function Detail({ animekey }) {
 
             }
             catch (error) {
-                console.log(error)
+                setError(error.message)
             }
         }
 
         fetchdata();
     }, [animekey])
+
+    if(error){
+        return(
+            <div className={`h-96 grid place-items-center text-xl`}>
+                {error}
+            </div>
+        )
+    }
 
     return (
         <>
@@ -36,9 +46,9 @@ export default function Detail({ animekey }) {
             {
                 load && <div className='animedetailscont'>
                     <div className="animedetails">
-                        <div className="Animegene" style={theme ? { background: "#000", borderColor: "#36BCE5" } : {}}>
-                            <h1>{animeDetail.title}</h1>
-                        </div>
+                    <div className={` ${theme?"bg-[#D8D8D8] border-[#000]":"bg-[#000000] border-[#6B6767]"} py-2 flex items-center justify-between px-2 mb-2  text-2xl border-l-4     `}>
+                        <h1>{animeDetail.title}</h1> <span></span>
+                    </div>
 
                         <div className="animeimg">
                             <img src={animeDetail.images.jpg.large_image_url} alt={animeDetail.title} />
@@ -72,8 +82,8 @@ export default function Detail({ animekey }) {
                                 </ul>
                             </div>
 
-                            <div className="watchButton">
-                                <button style={theme ? { background: '#000', } : {}}><NavLink to={`/AnimeWatch/${animekey}`} style={theme ? { background: '#000', color: "#36BCE5" } : {}}>Watch Now</NavLink></button>
+                            <div className="mt-8">
+                              <NavLink className=" rounded bg-[#000] px-2 py-2 text-white" to={`/AnimeWatch/${animekey}/`} >Watch Now</NavLink>
                             </div>
                             <br />
                             <hr />

@@ -8,10 +8,9 @@ import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import AnimeDetail from './pages/AnimeDetail';
 import AnimeWatch from './pages/AnimeWatch';
 import NotFoundPage from './pages/NotFoundPage';
-import AnimeSearchResult from './pages/AnimeSearchResult';
-import Anime from './pages/Anime';
-import Manga from './pages/Manga';
+import SearchResult from './pages/SearchResult';
 import MangaDetails from './pages/MangaDetails';
+import CatPage from './pages/CatPage';
 
 export const themecontext = createContext(null)
 export const themehandlecontext = createContext(null)
@@ -30,22 +29,23 @@ function App() {
   return (
     <>
       <themecontext.Provider value={theme}>
-        <div className='appcont' style={theme ? { background: '#1B1B1E', } : {}}>
+        <div className={` ${theme?"bg-[#ffffff] text-black":"bg-[#242424] text-[#fff]"} '} `} >
           <Router>
             <themehandlecontext.Provider value={themeHandle}>
-              <NavBar />
+              <header> <NavBar /></header>
             </themehandlecontext.Provider>
-            <Routes>
-              <Route exact path='/' element={<HomePage />} ></Route>
-              <Route path={`/Anime`} element={<Anime />} ></Route>
-              <Route path={`/Manga`} element={<Manga />} ></Route>
-              <Route path={`/AnimeDetail/:id/*`} element={<AnimeDetail />} ></Route>
-              <Route path={`/MangaDetail/:id/*`} element={<MangaDetails />} ></Route>
-              <Route exact path={`/AnimeWatch/:id`} element={<AnimeWatch />} />
-              <Route exact path={`/AnimeSearch/:id`} element={<AnimeSearchResult />} />
-              <Route path='/notfound' element={<NotFoundPage />} />
-            </Routes>
-            <Footer />
+            <main className='py-16  px-3 sm:px-16 flex flex-col justify-center items-center *:w-full'>
+              <Routes>
+                <Route exact path='/' element={<HomePage />} ></Route>
+                <Route path={'/:type'} element={<CatPage />} />
+                <Route path={`/animeDetail/:id/:type/*`} element={<AnimeDetail />} ></Route>
+                <Route path={`/mangaDetail/:id/:type/*`} element={<MangaDetails />} ></Route>
+                <Route exact path={`/AnimeWatch/:id`} element={<AnimeWatch />} />
+                <Route exact path={`/Search/:id/:type`} element={<SearchResult />} />
+                <Route path='/notfound' element={<NotFoundPage />} />
+              </Routes>
+            </main>
+            <footer><Footer /></footer>
           </Router>
         </div>
       </themecontext.Provider>

@@ -1,14 +1,13 @@
 import axios from 'axios';
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import Loadbar from '../components/loadingbar';
-import { themecontext } from '../App';
 import { useParams } from 'react-router-dom';
 
 export default function AnimeWatch() {
     const param=useParams()
     const [animeWatchdata, setAnimeWatchDate] = useState('')
     const [load, setLoad] = useState(false)
-    const theme=useContext(themecontext)
+    const [error, setError] = useState('')
     useEffect(() => {
         const fetchdata = async () => {
             try {
@@ -17,22 +16,30 @@ export default function AnimeWatch() {
                 setLoad(true)
             }
             catch (error) {
-                console.log(error)
+                setError(error.message)
             }
         }
 
         fetchdata();
     }, [param.id])
 
+    if(error){
+        return(
+            <div className={`h-96 grid place-items-center text-xl`}>
+                {error}
+            </div>
+        )
+    }
+
     return (
         <>
-            <div className="animewatchcont">
+            <div className="">
                 {
                     !load && <Loadbar />
                 }
 
-                {load && animeWatchdata.promo.length && <div className="animetrailercont">
-                    <iframe title={'Anime trailer'}
+                {load && animeWatchdata.promo.length && <div className=" flex justify-center items-center h-80 sm:h-[500px]">
+                    <iframe className='w-full sm:w-4/5 h-full ' title={'Anime trailer'}
                         src={animeWatchdata.promo[0].trailer.embed_url}>
                     </iframe>
 
@@ -40,15 +47,15 @@ export default function AnimeWatch() {
 
                 {load &&
 
-                    <div className="animeepicont">
+                    <div className=" flex flex-col-reverse my-10">
                         {animeWatchdata.episodes.map((episode, index) => {
                             return (
-                                <>
-                                    <div className='AnimeEpisode' key={index} style={theme?{background:'#2d2d2d'}:{}}>
-                                        <span>Episode: {episode.mal_id}</span>
+                            
+                                    <div className='py-4' key={index}>
+                                        <span className=''>Episode: {episode.mal_id}</span>
                                         <h4><a href={episode.url}>Title: {episode.title}</a></h4>
                                     </div>
-                                </>
+                         
                             )
                         })}
                     </div>

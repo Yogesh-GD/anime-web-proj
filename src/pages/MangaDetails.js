@@ -1,6 +1,6 @@
 import React from 'react'
 import Detail from '../components/MangaInfo';
-import Recommandation from '../components/MangaRecommandation';
+import Recommandation from '../components/Recommandation';
 import { useParams } from 'react-router-dom';
 
 export default function MangaDetails() {
@@ -9,7 +9,7 @@ export default function MangaDetails() {
     <>
         
     <Detail animekey={params.id} />
-    <Recommandation animekey={params.id} />
+    <Recommandation ckey={params.id} type={params.type} />
 
 </>
   )
